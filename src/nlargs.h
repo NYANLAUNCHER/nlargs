@@ -2,7 +2,9 @@
 #ifndef _NLARGS_H
 #define _NLARGS_H
 #define NL_VERSION "0.0"
+#include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 // The settings for nl_args
 typedef struct nl_settings{
@@ -18,45 +20,54 @@ typedef struct nl_arg {
     char short_str;
     // the amt of strings it takes as a value
     int vals;
+    // allow nl args to modify str
+    // if != 0 nl args looks for the exact string str is equal to
+    /// instead of adding a "--" to the front of it
+    /// and substituting whitespace for '-'
+    int modify_str;
     // its value
     // handled by nl args
     char** value;
     // the function it was called in
-    // handled by nl args
+    // can be specified manually
     char* func;
     // where it is relative to the func
+    // if > 0, arg was found
     // handled by nl args
     int pos;
-    // allow nl args to modify str
-    // if != 0 nl args looks for the exact string str is equal to
-    /// instead of adding a "--" to the front of it
-    int modify_str;
 }nl_arg;
 
 // Store all args to search for
-// each index = "<str>\n<short_str>\n<vals>\n<value>\n<func>\n<pos>\n<modify_str>"
 // see: "https://stackoverflow.com/questions/3536153/c-dynamically-growing-array"
-// see: "https://stackoverflow.com/questions/10468128/how-do-you-make-an-array-of-structs-in-c"
 nl_arg* nl_argslist;
+// Don't mess with this unless you want segfaults
+// the last used index
+size_t nl_argslist_used;
+// Don't mess with this unless you want segfaults
+size_t nl_argslist_size;
 
-// Add arguments to search for
+// Add an argument to search for
 // won't take an arg if both str and short_str is empty
-void nl_addargs(nl_arg arg, ...) {
+void nl_addarg(nl_arg arg) {
+    size_t init_size = 10;
+    if (arg.str[0] == '\0' && arg.short_str == '\0')
+        printf("nl_addargs(), Invalid argument:\n  Both str and short_str are empty.\n");
+    else {
+        nl_argslist = (nl_arg *)realloc(nl_argslist, (sizeof(nl_arg) * nl_argslist_used+1));
+        nl_argslist[++nl_argslist_used] = arg;
+    }
 }
 
 // Check for args in an array
-void nl_getargs(int argc, char** argv) {
-}
-
-// Return an arg from nl_argslist
-nl_arg nl_findarg(nl_arg arg) {
-    nl_arg rtval;
+// returns the indexes of the args it found
+int* nl_getargs(int argc, char** argv) { int* rtval;
     return rtval;
 }
 
 // Check if an arg exists in nl_argslist
-int nl_hasarg(nl_arg arg) {
-    return 0;
+// returns its index or -1
+int nl_hasarg(nl_arg arg) { int rtval = -1;
+    return rtval;
 }
 
 #endif

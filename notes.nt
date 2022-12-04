@@ -2,4 +2,6 @@
 - Idea Hut:
   - the first string that isn't a value or argument, defines the start of a new function/section
   - if an arg contains '=' then it takes the rest of the current string as it's value
-  - if an arg ends in '=' then it takes the next string as it's value
+  - if an arg ends in '= ' then it takes the next string as it's value
+  -
+

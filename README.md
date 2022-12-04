@@ -1,6 +1,6 @@
 
 # nlArgs
-A C library to handle "git style" args.
+A C library to parse and store "git style" args.
 
 ## Usage
 ```
@@ -8,8 +8,8 @@ A C library to handle "git style" args.
 args = Specifies the global args.
 func = An internal function of "cmd".
 func_args = Args to passed to "func".
-member_func = An internal function of "func".
-member_func_args = Args to passed to "member_func".
+sub_func = An internal function of "func".
+sub_func_args = Args to passed to "member_func".
 ```
-Note: There can be member functions of member functions, it can go as deep as you want.
+Note: There can be sub functions of sub functions, it can go as deep as you want.
 
